@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+
+<p><button onclick="geoFindMe()">Save my location</button></p>
+<p><button onclick="displayList()">Show my locations</button></p>
+<p><button onclick="clearList()">Clear List</button></p>
+
+<div id="out"></div>
+
+<script>
+
+var getGeoDiff = function(dd1, dd2) {
+  return {
+    latitude: dd1.latitude - dd2.latitude,
+    longitude: dd1.longitude - dd2.longitude,
+    accuracy: Math.max(dd1.accuracy, dd2.accuracy)
+  };
+};
+
+var GeoList = {
+  list: [],
+  // init: function() {
+  //   this.list = localStorage.getItem("GEO-LIST") || [];
+  // },
+  add: function(coords) {
+    this.list.push(coords);
+    this.set(this.list);
+  },
+  clear: function() {
+    this.list = [];
+    this.set(this.list);
+  },
+  set: function(list) {
+    localStorage.setItem("GEO-LIST", list);
+  },
+  getLastDiff: function() {
+    var moreThanOne = (this.list && this.list.length && this.list.length > 1);
+    if (moreThanOne) {
+      var lastIdx = this.list.length-1;
+      var last = this.list[lastIdx];
+      var previous = this.list[lastIdx-1];
+      var diff = getGeoDiff(last, previous);
+      return diff;
+    }
+    else {
+      return {
+        latitude: undefined,
+        longitude: undefined,
+        accuracy: 1
+      };
+    }
+  }
+};
+
+var getGeo = function() {
+  alert('getGeo');
+
+  var options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+  };
+
+  var promise = new Promise(function(resolve, reject) {
+    if (!navigator.geolocation) {
+      reject('Geolocation is not supported');
+    }
+
+    var success = function(position) {
+      console.log(position);
+
+      var pos = {
+        latitude  : position.coords.latitude,
+        longitude : position.coords.longitude,
+        accuracy: position.coords.accuracy  
+      };
+      resolve(pos);
+    };
+
+    var error = function(error) {
+      // console.log("ERROR");
+      reject('Geolocation error: ' + JSON.stringify(error));
+    };
+
+    options = null; // more precise for WiFi?
+    navigator.geolocation.getCurrentPosition(success, error, options);
+  });
+
+  return promise;
+};
+
+
+// GeoList.clear();
+
+
+function geoFindMe() {
+  var output = document.getElementById("out");
+
+  getGeo().then(function(coords) {
+    var latitude  = coords.latitude;
+    var longitude = coords.longitude;
+    var accuracy = coords.accuracy;
+
+    console.log("LAT: " + latitude);
+    console.log("LONG: " + longitude);
+
+    // Safari 8 doesn't support ES6 String Templates!
+    // output.innerHTML = '<p>Latitude is ' + latitude + '° <br>Longitude is ' + longitude + '°, within ' + accuracy + ' meters</p>';
+
+    output.innerHTML = `<p>Latitude is ${latitude} <br>Longitude is ${longitude}, within ${accuracy} meters </p>`;
+
+    // var img = new Image();
+    // img.src = "https://maps.googleapis.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&zoom=18&size=300x300&sensor=false";
+    // output.appendChild(img);
+
+    // GeoList.add(coords);
+
+  }).catch(function(err) {
+    output.innerHTML = "<p>Oh no!!! " + JSON.stringify(err) + "</p>";    
+  });
+}
+
+function displayList() {
+  var out = '';
+  var list = GeoList.list;
+  for (var i = 0; i < list.length; i++) {
+    var coord = list[i];
+    out += '<br>' + JSON.stringify(coord);
+  }
+  var output = document.getElementById("out");
+  output.innerHTML = "<p>" + out + "</p>";    
+}
+
+function clearList() {
+  GeoList.clear();
+  var output = document.getElementById("out");
+  output.innerHTML = "<p></p>";    
+}
+
+</script>
+
+</html>

@@ -1,0 +1,40 @@
+FIT Web Design Certificate, 2015
+
+Required courses
+CTB 002   The Mac: Basics and Beyond (or similar experience)
+CTD 600   HTML
+CTD 605   Cascading Style Sheets
+CTD 606   HTML5 and CSS3
+CTD 610   Dreamweaver I
+CTD 611   Dreamweaver II
+CTD 612   JavaScript
+CTD 613   WordPress
+CTD 615   Web Accessibility (GUI)
+CTD 616   User Interface and User Experience Basics
+CTD 617   Gamification 
+CTD 641   Search Engine Optimization 
+
+Proposal: 3 tracks
+
+Track #1: Web Publishing
+* HTML
+* CSS
+* Wordpress
+* Dreamweaver I
+* Dreamweaver II ?
+* SEO
+
+Track #2: Web Design (prerequisite: HTML, CSS)
+* HTML5/CSS3
+* Javascript (6 weeks: focused on DOM, intro to jquery)
+* JQuery (prerequisite: Javascript)
+* Responsive Web Design
+* Illustrator
+* Photoshop
+
+Track #3: Web Development (prerequisite: Javascript)
+* Web Animation (SVG, animate.css, velocity.js / greensock, canvas: html5 games!, processingjs.com, webgl?), 5 weeks?
+* HTML5/Javascript APIs (geolocation, gyroscope/tilt, webrtc camera, video, audio)
+* Front-End Development (tools: github, npm gulp, frameworks/libraries)
+* HTML5 Web Single Page App
+
